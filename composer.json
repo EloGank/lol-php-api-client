@@ -1,0 +1,18 @@
+{
+   "name": "elogank/lol-php-api-client",
+   "description": "League of Legends PHP API Client",
+   "keywords": ["lol", "api", "client", "league of legends", "lol api", "rtmp"],
+   "licence": "CC BY-SA 3.0",
+   "authors": [
+       {
+           "name": "Sylvain Lorinet",
+           "email": "sylvain.lorinet@gmail.com"
+       }
+    ],
+    "autoload": {
+        "psr-0": {
+            "EloGank\\ApiClient": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
