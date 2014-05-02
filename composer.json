@@ -9,9 +9,17 @@
            "email": "sylvain.lorinet@gmail.com"
        }
     ],
+    "require": {
+        "php": ">=5.4.0"
+    },
     "autoload": {
         "psr-0": {
             "EloGank\\ApiClient": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
         }
     },
     "minimum-stability": "dev"

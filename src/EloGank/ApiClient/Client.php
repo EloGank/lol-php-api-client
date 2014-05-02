@@ -57,7 +57,7 @@ class Client
      * @param int    $port           The server port
      * @param string $format         The default output format
      * @param bool   $throwException If true, an ApiException will be throw on error and the response won't<br />
-     *                               contain the first array level which contain the "success" & "result"/"error" keys.
+     *                               contain the first array level which contain "success" & "result"/"error" keys.
      */
     public function __construct($host, $port, $format, $throwException = true)
     {
