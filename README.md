@@ -33,6 +33,7 @@ Finally, install this repository !
 ## How to use
 
 The `Client` object need three parameters, and one optionnal :
+
 * `$host` the server host IP address
 * `$port` the server port
 * `$format` the default output format
@@ -52,6 +53,12 @@ try {
     var_dump($e->getCause(), $e->getMessage());
 }
 ```
+
+The `send()` method have three parameters and one optionnal :
+* `region` it's the client region short name (EUW, NA, ...). Make sure there is a registered client for the selected region in your API !
+* `route` the API route, in short it's the "`controller_name`.`method_name`"
+* `parameters` it's the route parameters, it's an array
+* `format` (optionnal) if you need a specific format for a specific route (see the [API configuration documentation](https://github.com/EloGank/lol-php-api/blob/master/doc/configuration.md) for available formats)
 
 #### Example 
 
