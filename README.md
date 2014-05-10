@@ -65,7 +65,7 @@ The `send()` method have three parameters and one optional :
 
 This example is available in the file `examples/index.php`.
 
-**Note 1:** use `192.168.100.10` instead of `127.0.0.1` if you using Virtual Machine for the API server.
+**Note 1:** use `192.168.100.10` instead of `127.0.0.1` if you using Virtual Machine for the API server.  
 **Note 2:** a `ConnectionException` can be thrown if there is a problem with the server (timeout or connection refused, for example). Be sure to handle this case by surrounding with a try/catch.
 
 ``` php
