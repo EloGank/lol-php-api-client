@@ -12,6 +12,7 @@
 namespace EloGank\ApiClient;
 
 use EloGank\ApiClient\Exception\ApiException;
+use EloGank\ApiClient\Formatter\Exception\ConnectionException;
 use EloGank\ApiClient\Formatter\Exception\UnknownFormatterException;
 use EloGank\ApiClient\Formatter\FormatterInterface;
 use EloGank\ApiClient\Formatter\JsonFormatter;
@@ -42,6 +43,11 @@ class Client
     protected $throwException;
 
     /**
+     * @var float
+     */
+    protected $timeout;
+
+    /**
      * @var FormatterInterface[]
      */
     protected $formatters;
@@ -58,14 +64,20 @@ class Client
      * @param string $format         The default output format
      * @param bool   $throwException If true, an ApiException will be throw on error and the response won't<br />
      *                               contain the first array level which contain "success" & "result"/"error" keys.
+     * @param float  $timeout        The socket connection timeout, in second
      */
-    public function __construct($host, $port, $format, $throwException = true)
+    public function __construct($host, $port, $format, $throwException = true, $timeout = null)
     {
         $this->host           = $host;
         $this->port           = $port;
         $this->format         = $format;
         $this->throwException = $throwException;
+        $this->timeout        = $timeout;
         $this->socket         = null;
+
+        if (null == $timeout) {
+            $this->timeout = ini_get('default_socket_timeout');
+        }
 
         $this->formatters = [
             'json' => new JsonFormatter()
@@ -77,7 +89,9 @@ class Client
      */
     public function __destruct()
     {
-        stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+        if (null != $this->socket) {
+            stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+        }
     }
 
     /**
@@ -90,11 +104,15 @@ class Client
      *
      * @throws ApiException
      * @throws UnknownFormatterException
+     * @throws ConnectionException
      */
     public function send($region, $route, array $parameters = [], $format = null)
     {
         if (null === $this->socket) {
-            $this->socket = stream_socket_client(sprintf('tcp://%s:%d', $this->host, $this->port));
+            $this->socket = @stream_socket_client(sprintf('tcp://%s:%d', $this->host, $this->port), $errno, $errstr, $this->timeout);
+            if (0 < $errno) {
+                throw new ConnectionException($errstr . ' (code: ' . $errno . ')');
+            }
         }
 
         $data = [

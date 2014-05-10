@@ -32,12 +32,13 @@ Finally, install this repository !
 
 ## How to use
 
-The `Client` object need three parameters, and one optionnal :
+The `Client` object need three parameters, and two as optionals :
 
 * `$host` the server host IP address
 * `$port` the server port
 * `$format` the default output format
-* `$throwException` (optionnal, default: true) if true, an `ApiException` will be throw on error and the response won't contain the first array level which contain "success" & "result"/"error" keys.
+* `$throwException` (optional, default: true) if true, an `ApiException` will be throw on error and the response won't contain the first array level which contain "success" & "result"/"error" keys.
+* `$timeout` (optional, default: your php.ini "default_socket_timeout" configuration) the connection timeout, in second.
 
 In short :
 
@@ -54,15 +55,18 @@ try {
 }
 ```
 
-The `send()` method have three parameters and one optionnal :
+The `send()` method have three parameters and one optional :
 * `region` it's the client region short name (EUW, NA, ...). Make sure there is a registered client for the selected region in your API !
 * `route` the API route, in short it's the "`controller_name`.`method_name`"
 * `parameters` it's the route parameters, it's an array
-* `format` (optionnal) if you need a specific format for a specific route (see the [API configuration documentation](https://github.com/EloGank/lol-php-api/blob/master/doc/configuration.md) for available formats)
+* `format` (optional) if you need a specific format for a specific route (see the [API configuration documentation](https://github.com/EloGank/lol-php-api/blob/master/doc/configuration.md) for available formats)
 
 #### Example 
 
 This example is available in the file `examples/index.php`.
+
+**Note 1:** use `192.168.100.10` instead of `127.0.0.1` if you using Virtual Machine for the API server.
+**Note 2:** a `ConnectionException` can be thrown if there is a problem with the server (timeout or connection refused, for example). Be sure to handle this case by surrounding with a try/catch.
 
 ``` php
 // examples/index.php
@@ -70,8 +74,6 @@ This example is available in the file `examples/index.php`.
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-
-// NOTE: use 192.168.100.10 instead of 127.0.0.1 if you using Virtual Machine for the API server
 
 // Good response, no error, with exception
 $client = new \EloGank\ApiClient\Client('127.0.0.1', 8080, 'json');

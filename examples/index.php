@@ -2,7 +2,9 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// NOTE: use 192.168.100.10 instead of 127.0.0.1 if you using Virtual Machine for the API server
+// NOTE1: use 192.168.100.10 instead of 127.0.0.1 if you using Virtual Machine for the API server
+// NOTE2: a "ConnectionException" can be thrown if there is a problem with the server (timeout or connection refused,
+//        for example). Be sure to handle this case by surrounding with a try/catch.
 
 // Good response, no error, with exception
 $client = new \EloGank\ApiClient\Client('127.0.0.1', 8080, 'json');
