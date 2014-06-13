@@ -108,11 +108,9 @@ class Client
      */
     public function send($region, $route, array $parameters = [], $format = null)
     {
-        if (null === $this->socket) {
-            $this->socket = @stream_socket_client(sprintf('tcp://%s:%d', $this->host, $this->port), $errno, $errstr, $this->timeout);
-            if (0 < $errno) {
-                throw new ConnectionException($errstr . ' (code: ' . $errno . ')');
-            }
+        $this->socket = @stream_socket_client(sprintf('tcp://%s:%d', $this->host, $this->port), $errno, $errstr, $this->timeout);
+        if (0 < $errno) {
+            throw new ConnectionException($errstr . ' (code: ' . $errno . ')');
         }
 
         $data = [
