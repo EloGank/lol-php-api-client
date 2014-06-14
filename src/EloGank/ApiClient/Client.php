@@ -12,7 +12,7 @@
 namespace EloGank\ApiClient;
 
 use EloGank\ApiClient\Exception\ApiException;
-use EloGank\ApiClient\Formatter\Exception\ConnectionException;
+use EloGank\ApiClient\Exception\ConnectionException;
 use EloGank\ApiClient\Formatter\Exception\UnknownFormatterException;
 use EloGank\ApiClient\Formatter\FormatterInterface;
 use EloGank\ApiClient\Formatter\JsonFormatter;
@@ -113,6 +113,8 @@ class Client
             throw new ConnectionException($errstr . ' (code: ' . $errno . ')');
         }
 
+        stream_set_timeout($this->socket, $this->timeout);
+
         $data = [
             'region'     => $region,
             'route'      => $route,
@@ -126,6 +128,9 @@ class Client
         fwrite($this->socket, json_encode($data));
 
         $results = fgets($this->socket);
+        if (false === $results) {
+            throw new ConnectionException('API timed out, the client will restart, please retry in a few seconds');
+        }
 
         if (null == $format) {
             $format = $this->format;
@@ -150,4 +155,20 @@ class Client
 
         return $response;
     }
-} 
+
+    /**
+     * @param float $timeout
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+    }
+}

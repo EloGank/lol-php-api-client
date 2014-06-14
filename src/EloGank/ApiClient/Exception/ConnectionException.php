@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EloGank\ApiClient\Formatter\Exception;
+namespace EloGank\ApiClient\Exception;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
