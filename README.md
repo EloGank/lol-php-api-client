@@ -116,4 +116,16 @@ if ($response['success']) {
 else {
     var_dump($response['error']);
 }
+
+// Request with timeout
+$client = null;
+$client = new \EloGank\ApiClient\Client('128.0.0.1', 8080, 'json', false, 1);
+$response = $client->send('EUW', 'summoner.summoner_existence', ['Not_found_summoner']);
+
+if ($response['success']) {
+    // do some process
+}
+else {
+    var_dump($response['error']);
+}
 ```
