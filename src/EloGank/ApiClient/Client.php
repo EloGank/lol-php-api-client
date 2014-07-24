@@ -85,16 +85,6 @@ class Client
     }
 
     /**
-     * When the instance will be killed
-     */
-    public function __destruct()
-    {
-        if (null != $this->socket) {
-            stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
-        }
-    }
-
-    /**
      * @param string      $region     The region shot name (EUW, NA, ...)
      * @param string      $route      The route, see the documentation for the route list
      * @param array       $parameters The route parameters
@@ -128,6 +118,11 @@ class Client
         fwrite($this->socket, json_encode($data));
 
         $results = fgets($this->socket);
+        if (null != $this->socket) {
+            stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+            $this->socket = null;
+        }
+
         if (false === $results) {
             throw new ConnectionException('API timed out, the client will restart, please retry in a few seconds');
         }
