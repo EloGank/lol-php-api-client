@@ -12,7 +12,7 @@ In the `require` key :
 ``` json
 {
     "require": {
-        "elogank/php-lol-api-client": "1.0.*@dev"
+        "elogank/lol-php-api-client": "1.0.*@dev"
     }
 }
 ```
